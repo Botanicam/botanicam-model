@@ -15,3 +15,6 @@ NUM_WORKERS: int = 2 # ref https://pytorch.org/docs/stable/data.html#torch.utils
 
 # Path to the dataset
 DATASET_PATH: str = 'plantnet_300K/plantnet_300K'
+
+# Samples for iterative training
+SAMPLES: int = 5000

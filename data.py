@@ -3,7 +3,9 @@ from typing import *
 
 import torch
 import numpy as np
-from torch.utils.data import DataLoader
+from torchvision.datasets import ImageFolder
+from torchvision.transforms import ToTensor
+from torch.utils.data import Subset, DataLoader
 
 from const import *
 

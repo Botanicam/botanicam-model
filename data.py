@@ -44,8 +44,22 @@ def reduce_dataset(dataset: torch.utils.data.Dataset, samples: int) -> torch.uti
     Returns:
         dataset (torch.utils.data.Dataset): The reduced dataset
     """
-    # First, get the class weights
-    class_weights = get_class_weights(dataset)
+    transform = ToTensor()
+
+    # Load full training set
+    full_train_dataset = ImageFolder(os.path.join(dataset_path, 'images/train'), transform=transform)
+
+    # Get class weights 
+    ### : ifaz go make get_class_weights()! ###
+    #class_weights = get_class_weights(full_train_dataset)
+
+    # Create a sampler to select samples based on class weights
+    sampler = torch.utils.data.sampler.WeightedRandomSampler(class_weights, samples, replacement=False)
+
+    # Create a subset of the training dataset using the sampler
+    reduced_train_dataset = Subset(full_train_dataset, sampler=sampler)
+
+    return reduced_train_dataset
 
 
 # function to get the class weights

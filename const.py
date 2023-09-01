@@ -14,7 +14,10 @@ NUM_CLASSES: int = 1081 # ref https://openreview.net/forum?id=eLYinD0TtIt
 NUM_WORKERS: int = 2 # ref https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader
 
 # Path to the dataset
-DATASET_PATH: str = 'plantnet_300K/plantnet_300K'
+DATASET_PATH: str = 'plantnet_300K'
 
 # Samples for iterative training
 SAMPLES: int = 5000
+
+# Number of workers (i.e. threads)
+NUM_WORKERS: int = 2

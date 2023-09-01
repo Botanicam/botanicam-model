@@ -3,6 +3,7 @@ import torch
 from tqdm import tqdm
 from torch.optim import SGD
 from torch.nn import CrossEntropyLoss
+from log_cfg import logger
 
 import epoch
 from const import *

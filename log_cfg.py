@@ -10,7 +10,7 @@ if not logging.getLogger().handlers:
         # Create a formatter with the desired log format
         formatter = logging.Formatter(
             fmt="[%(asctime)s] %(levelname)s (%(filename)s:%(lineno)d): %(message)s",
-            datefmt="%d/%m/%Y %H:%M"
+            datefmt="%d/%m/%Y %H:%M:%S"
         )
 
         # Create a file handler (logs to a file)

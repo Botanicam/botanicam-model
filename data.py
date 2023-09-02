@@ -1,15 +1,14 @@
-#Loads data
 from typing import *
 
 import torch
-import numpy as np
 import os
-import multiprocessing as mp
 
 from torchvision.datasets import ImageFolder
-from torchvision.transforms import ToTensor
+from torchvision import transforms
+from torchvision.transforms import Resize, ToTensor
 from torch.utils.data import Subset, DataLoader
 from sklearn.model_selection import train_test_split
+from torchvision.transforms import Resize
 
 from const import *
 from log_cfg import logger
@@ -24,7 +23,10 @@ def load_dataset(partial=True) -> Tuple[DataLoader, DataLoader, DataLoader]:
         val_loader (DataLoader): The validation data loader
     """
     # Create a transform to convert the images to tensors
-    transform = ToTensor()
+    transform = transforms.Compose([
+        Resize((224, 224)),
+        ToTensor()
+    ])
 
     # Load the full training set & reduce it
     logger.info(f"Loading full training set")
@@ -79,7 +81,37 @@ The images are at `DATASET_PATH/images` containing a 1081 classes (directories) 
 
 # Test
 if __name__ == '__main__':
-    train_loader, test_loader, val_loader = load_dataset()
-    logger.debug(train_loader)
-    logger.debug(test_loader)
-    logger.debug(val_loader)
+    train_loader, test_loader, val_loader = load_dataset(partial=True)
+    
+    # Check basic statistics about the datasets
+    num_classes = NUM_CLASSES
+    num_train_samples = len(train_loader.dataset)
+    num_test_samples = len(test_loader.dataset)
+    num_val_samples = len(val_loader.dataset)
+    
+    logger.info(f"Number of classes: {num_classes}")
+    logger.info(f"Number of training samples: {num_train_samples}")
+    logger.info(f"Number of testing samples: {num_test_samples}")
+    logger.info(f"Number of validation samples: {num_val_samples}")
+    
+    # Iterate through a few batches to check data loader behavior
+    for batch_idx, (data, targets) in enumerate(train_loader):
+        if batch_idx < 2:  # Print information for the first 2 batches
+            logger.info(f"Batch {batch_idx}:")
+            logger.info(f"  Data shape: {data.shape}")
+            logger.info(f"  Targets shape: {targets.shape}")
+        
+    # Visualize a few samples (you can use matplotlib or another library for this)
+    import matplotlib.pyplot as plt
+    
+    for batch_idx, (data, targets) in enumerate(train_loader):
+        try:
+            if batch_idx < 2:  # Visualize the first 2 batches
+                for i in range(data.size(0)):  # Visualize individual samples in the batch
+                    sample_image = data[i].permute(1, 2, 0)  # Rearrange channels for visualization
+                    plt.imshow(sample_image)
+                    plt.title(f"Class: {train_loader.dataset.classes[targets[i]]}")
+                    plt.show()
+        except Exception as e:
+            logger.error(e)
+            break

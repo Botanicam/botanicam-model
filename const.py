@@ -21,3 +21,11 @@ SAMPLES: int = 5000
 
 # Number of workers (i.e. threads)
 NUM_WORKERS: int = 2
+
+# Save model path
+MODEL_PATH: str = 'model.pth'
+
+# Convergence threshold for model training improvement
+CONVERGENCE_THRESHOLD: int = 3
+
+MAX_NON_IMPROVEMENT_EPOCHS: int = 5

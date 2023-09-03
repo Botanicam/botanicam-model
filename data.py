@@ -89,8 +89,16 @@ The images are at `DATASET_PATH/images` containing a 1081 classes (directories) 
 """
 # Test
 if __name__ == '__main__':
+    from tqdm import tqdm
+    import shutil
+
     train_loader, test_loader, val_loader = load_dataset(partial=True)
-    
+
+    # serialize the data loaders
+    torch.save(train_loader, 'train_loader.pth')
+    torch.save(test_loader, 'test_loader.pth')
+    torch.save(val_loader, 'val_loader.pth')
+
     # Check basic statistics about the datasets
     num_classes = NUM_CLASSES
     num_train_samples = len(train_loader.dataset)

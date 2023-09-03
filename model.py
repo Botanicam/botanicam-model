@@ -2,10 +2,13 @@ from typing import *
 import torch
 import torch.nn as nn
 from torchvision.models import mobilenet_v2, MobileNet_V2_Weights
+from torchvision import transforms
+from torchvision.transforms import Resize, ToTensor
 import torch.optim as optim
 from tqdm import tqdm
 import time
 import matplotlib.pyplot as plt
+from PIL import Image
 
 from const import *
 from log_cfg import logger
@@ -26,7 +29,6 @@ class BotanicamModel:
 
         # loss & optimizer
         self.loss = nn.CrossEntropyLoss()
-        self.optimizer = optim.Adam(self.model.parameters(), lr=LR)
 
         # device
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -44,7 +46,12 @@ class BotanicamModel:
         logger.info(f"Optimizer: {self.optimizer.__class__.__name__}")
         logger.info(f"Learning rate: {LR}")
 
-    def train(self, train_loader: torch.utils.data.DataLoader, val_loader: torch.utils.data.DataLoader) -> None:
+    def train(
+            self, train_loader: torch.utils.data.DataLoader,
+            val_loader: torch.utils.data.DataLoader,
+            epochs: int = EPOCHS,
+            lr: float = LR
+        ) -> None:
         """
         Trains the model
 
@@ -54,11 +61,12 @@ class BotanicamModel:
         """
         logger.info("Training the model...")
         start_time = time.time()
+        self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
 
         # train the model
         endFlag = False
-        for epoch in range(EPOCHS):
-            logger.info(f"Epoch {epoch + 1} of {EPOCHS}")
+        for epoch in range(epochs):
+            logger.info(f"Epoch {epoch + 1} of {epochs}")
 
             if endFlag:
                 logger.info("End flag is set. Stopping training...")
@@ -85,7 +93,7 @@ class BotanicamModel:
                 self.optimizer.step()
 
                 # update tqdm loop
-                loop.set_description(f"Epoch [{epoch + 1}/{EPOCHS}]")
+                loop.set_description(f"Epoch [{epoch + 1}/{epochs}]")
                 loop.set_postfix(loss=loss.item())
 
             # then we validate so we can track improvements
@@ -95,6 +103,116 @@ class BotanicamModel:
         end_time = time.time()
         elapsed = end_time - start_time
         logger.info(f"Training time: {elapsed:.2f}s")
+    
+    def test(self, test_loader: torch.utils.data.DataLoader) -> float:
+        """
+        Tests the model by calculating the accuracy on the test set
+
+        Args:
+            test_loader (torch.utils.data.DataLoader): Test data loader
+
+        Returns:
+            float: Test accuracy (0 to 1)
+        """
+        # set model to evaluation mode
+        self.model.eval()
+
+        # initialize variables
+        num_correct = 0
+        num_samples = 0
+
+        # disable gradient calculation
+        with torch.no_grad():
+            loop = tqdm(test_loader)
+            for batch, (data, targets) in enumerate(loop):
+                # move data to device
+                data = data.to(self.device)
+                targets = targets.to(self.device)
+
+                # forward propagation
+                scores = self.model(data)
+                _, predictions = scores.max(1)
+                num_correct += (predictions == targets).sum()
+                num_samples += predictions.size(0)
+
+                # update tqdm loop
+                loop.set_description(f"Testing")
+                loop.set_postfix(correct=num_correct, samples=num_samples, accuracy=(float(num_correct) / float(num_samples)) * 100.0)
+
+        # calculate accuracy
+        accuracy = float(num_correct) / float(num_samples) * 100.0
+        logger.info(f"Test accuracy: {accuracy:.2f}%")
+
+        return accuracy
+    
+    def predict(self, image: torch.Tensor) -> torch.Tensor:
+        """
+        Predicts the class of an image
+
+        Args:
+            image (torch.Tensor): Image tensor
+
+        Returns:
+            torch.Tensor: Predicted class
+        """
+        # set model to evaluation mode
+        self.model.eval()
+
+        # disable gradient calculation
+        with torch.no_grad():
+            # move data to device
+            image = image.to(self.device)
+
+            # forward propagation
+            scores = self.model(image)
+            _, predictions = scores.max(1)
+
+            return predictions
+        
+    def predict_classify(self, image: torch.Tensor, k: int = 1) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Predicts the class of an image and returns the class and the probability
+
+        Args:
+            image (torch.Tensor): Image tensor
+            k (int, optional): Number of classes to return
+
+        Returns:
+            Tuple[torch.Tensor, torch.Tensor]: Predicted class and probability
+        """
+        # set model to evaluation mode
+        self.model.eval()
+
+        # disable gradient calculation
+        with torch.no_grad():
+            # move data to device
+            image = image.to(self.device)
+
+            # forward propagation
+            scores = self.model(image)
+            _, predictions = scores.topk(k, dim=1)
+            probabilities = nn.functional.softmax(scores, dim=1)
+
+            return predictions, probabilities
+
+    def image_to_tensor(self, image: Image) -> torch.Tensor:
+        """
+        Converts an image to a tensor
+
+        Args:
+            image (Image): Image to convert
+
+        Returns:
+            torch.Tensor: Converted image
+        """
+        # convert image to tensor
+        transform = transforms.Compose([
+            Resize((224, 224)),
+            ToTensor()
+        ])
+        image = transform(image)
+
+        return image
 
     def __validate(self, val_loader: torch.utils.data.DataLoader) -> Tuple[bool, float]:
         """

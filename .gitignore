@@ -1,3 +1,5 @@
 ./plantnet_300K
 plantnet_300K
 __pycache__
+*.pth
+*.log

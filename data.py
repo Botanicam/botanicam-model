@@ -34,15 +34,10 @@ def load_dataset(partial : bool = True ) -> Tuple[DataLoader, DataLoader, DataLo
 
     # Load the full training set
     logger.info(f"Loading full training set")
-    full_train_dataset = ImageFolder(os.path.join(dataset_root, 'images/train'), transform=transform)
-
-    # Load the full testing set
-    logger.info(f"Loading full testing set")
-    full_test_dataset = ImageFolder(os.path.join(dataset_root, 'images/test'), transform=transform)
-
-    # Load the full validation set
-    logger.info(f"Loading full validation set")
-    full_val_dataset = ImageFolder(os.path.join(dataset_root, 'images/val'), transform=transform)
+    # CHANGE ADDRESS
+    full_train_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/train'), transform=transform)
+    full_test_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/test'), transform=transform)
+    full_val_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/val'), transform=transform)
 
     # Reduce the datasets if partial is True
     if partial:

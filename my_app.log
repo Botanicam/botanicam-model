@@ -8834,3 +8834,163 @@
 [02/09/2023 17:55:36] INFO (model.py:45): Learning rate: 0.001
 [02/09/2023 17:55:36] INFO (model.py:55): Training the model...
 [02/09/2023 17:55:36] INFO (model.py:61): Epoch 1 of 10
+[03/09/2023 02:01:37] INFO (data.py:36): Loading full training set
+[03/09/2023 02:01:48] INFO (data.py:36): Loading full training set
+[03/09/2023 02:02:17] INFO (data.py:80): Reducing dataset to 5000 samples per class
+[03/09/2023 02:19:36] INFO (data.py:32): Loading full training set
+[03/09/2023 02:26:00] INFO (data.py:32): Loading full training set
+[03/09/2023 02:26:20] INFO (data.py:32): Loading full training set
+[03/09/2023 02:26:39] INFO (data.py:67): Reducing dataset to 5000 samples per class
+[03/09/2023 02:26:39] INFO (data.py:40): Loading testing set
+[03/09/2023 02:26:42] INFO (data.py:44): Loading validation set
+[03/09/2023 02:26:45] INFO (data.py:92): Number of classes: 1081
+[03/09/2023 02:26:45] INFO (data.py:93): Number of training samples: 5000
+[03/09/2023 02:26:45] INFO (data.py:94): Number of testing samples: 31112
+[03/09/2023 02:26:45] INFO (data.py:95): Number of validation samples: 31118
+[03/09/2023 02:26:55] INFO (data.py:100): Batch 0:
+[03/09/2023 02:26:55] INFO (data.py:101):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 02:26:55] INFO (data.py:102):   Targets shape: torch.Size([32])
+[03/09/2023 02:26:55] INFO (data.py:100): Batch 1:
+[03/09/2023 02:26:55] INFO (data.py:101):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 02:26:55] INFO (data.py:102):   Targets shape: torch.Size([32])
+[03/09/2023 02:27:46] ERROR (data.py:116): 'Subset' object has no attribute 'classes'
+[03/09/2023 02:29:37] INFO (data.py:32): Loading full training set
+[03/09/2023 02:29:40] INFO (data.py:76): Reducing dataset to 5000 samples per class
+[03/09/2023 02:29:40] INFO (data.py:40): Loading testing set
+[03/09/2023 02:29:41] INFO (data.py:76): Reducing dataset to 5000 samples per class
+[03/09/2023 02:31:14] INFO (data.py:33): Loading full training set
+[03/09/2023 02:31:17] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:31:18] INFO (data.py:41): Loading testing set
+[03/09/2023 02:31:18] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:31:18] INFO (data.py:49): Loading validation set
+[03/09/2023 02:31:19] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:33:48] INFO (data.py:33): Loading full training set
+[03/09/2023 02:33:51] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:33:51] INFO (data.py:41): Loading testing set
+[03/09/2023 02:33:52] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:33:52] INFO (data.py:49): Loading validation set
+[03/09/2023 02:33:53] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:34:46] INFO (data.py:33): Loading full training set
+[03/09/2023 02:34:49] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:34:50] INFO (data.py:41): Loading testing set
+[03/09/2023 02:34:50] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:34:50] INFO (data.py:49): Loading validation set
+[03/09/2023 02:34:51] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:34:51] INFO (data.py:127): Number of classes: 1081
+[03/09/2023 02:34:51] INFO (data.py:128): Number of training samples: 238656
+[03/09/2023 02:34:51] INFO (data.py:129): Number of testing samples: 31112
+[03/09/2023 02:34:51] INFO (data.py:130): Number of validation samples: 31118
+[03/09/2023 02:35:01] INFO (data.py:135): Batch 0:
+[03/09/2023 02:35:01] INFO (data.py:136):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 02:35:01] INFO (data.py:137):   Targets shape: torch.Size([32])
+[03/09/2023 02:35:01] INFO (data.py:135): Batch 1:
+[03/09/2023 02:35:01] INFO (data.py:136):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 02:35:01] INFO (data.py:137):   Targets shape: torch.Size([32])
+[03/09/2023 02:36:41] INFO (data.py:32): Loading full training set
+[03/09/2023 02:37:12] INFO (data.py:32): Loading full training set
+[03/09/2023 02:37:15] INFO (data.py:67): Reducing dataset to 5000 samples per class
+[03/09/2023 02:37:16] INFO (data.py:40): Loading testing set
+[03/09/2023 02:37:16] INFO (data.py:44): Loading validation set
+[03/09/2023 02:37:17] INFO (data.py:92): Number of classes: 1081
+[03/09/2023 02:37:17] INFO (data.py:93): Number of training samples: 5000
+[03/09/2023 02:37:17] INFO (data.py:94): Number of testing samples: 31112
+[03/09/2023 02:37:17] INFO (data.py:95): Number of validation samples: 31118
+[03/09/2023 02:45:38] INFO (data.py:37): Loading full training set
+[03/09/2023 02:45:41] INFO (data.py:42): Loading full testing set
+[03/09/2023 02:45:42] INFO (data.py:46): Loading full validation set
+[03/09/2023 02:45:42] INFO (data.py:51): Reducing datasets to 5000
+[03/09/2023 02:45:42] INFO (data.py:80): Reducing dataset to 5000 samples per class
+[03/09/2023 02:45:43] INFO (data.py:80): Reducing dataset to 5000 samples per class
+[03/09/2023 02:47:21] INFO (data.py:37): Loading full training set
+[03/09/2023 02:47:24] INFO (data.py:42): Loading full testing set
+[03/09/2023 02:48:00] INFO (data.py:37): Loading full training set
+[03/09/2023 02:48:03] INFO (data.py:42): Loading full testing set
+[03/09/2023 02:48:04] INFO (data.py:46): Loading full validation set
+[03/09/2023 02:48:05] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 02:48:05] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:01:43] INFO (data.py:37): Loading full training set
+[03/09/2023 03:01:46] INFO (data.py:42): Loading full testing set
+[03/09/2023 03:01:47] INFO (data.py:46): Loading full validation set
+[03/09/2023 03:01:47] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:01:47] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:02:06] INFO (data.py:37): Loading full training set
+[03/09/2023 03:02:10] INFO (data.py:42): Loading full testing set
+[03/09/2023 03:02:10] INFO (data.py:46): Loading full validation set
+[03/09/2023 03:02:11] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:02:11] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:03:49] INFO (data.py:41): Loading full training set
+[03/09/2023 03:03:52] INFO (data.py:46): Loading full testing set
+[03/09/2023 03:03:53] INFO (data.py:50): Loading full validation set
+[03/09/2023 03:03:53] INFO (data.py:81): Reducing dataset to 5000 samples per class with a minimum of 2 samples per class
+[03/09/2023 03:04:29] INFO (data.py:41): Loading full training set
+[03/09/2023 03:04:33] INFO (data.py:46): Loading full testing set
+[03/09/2023 03:04:33] INFO (data.py:50): Loading full validation set
+[03/09/2023 03:04:34] INFO (data.py:81): Reducing dataset to 5000 samples per class with a minimum of 2 samples per class
+[03/09/2023 03:05:48] INFO (data.py:41): Loading full training set
+[03/09/2023 03:05:52] INFO (data.py:46): Loading full testing set
+[03/09/2023 03:05:52] INFO (data.py:50): Loading full validation set
+[03/09/2023 03:05:53] INFO (data.py:81): Reducing dataset to 5000 samples per class with a minimum of 2 samples per class
+[03/09/2023 03:08:02] INFO (data.py:41): Loading full training set
+[03/09/2023 03:08:03] INFO (data.py:46): Loading full testing set
+[03/09/2023 03:08:04] INFO (data.py:50): Loading full validation set
+[03/09/2023 03:08:04] INFO (data.py:81): Reducing dataset to 5000 samples per class with a minimum of 2 samples per class
+[03/09/2023 03:08:25] INFO (data.py:41): Loading full training set
+[03/09/2023 03:08:26] INFO (data.py:46): Loading full testing set
+[03/09/2023 03:08:27] INFO (data.py:50): Loading full validation set
+[03/09/2023 03:08:27] INFO (data.py:81): Reducing dataset to 5000 samples per class with a minimum of 2 samples per class
+[03/09/2023 03:10:11] INFO (data.py:37): Loading full training set
+[03/09/2023 03:10:14] INFO (data.py:42): Loading full testing set
+[03/09/2023 03:10:15] INFO (data.py:46): Loading full validation set
+[03/09/2023 03:10:16] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:10:16] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:10:16] INFO (data.py:102): Number of classes: 1081
+[03/09/2023 03:10:16] INFO (data.py:103): Number of training samples: 5000
+[03/09/2023 03:10:16] INFO (data.py:104): Number of testing samples: 31112
+[03/09/2023 03:10:16] INFO (data.py:105): Number of validation samples: 5000
+[03/09/2023 03:10:28] INFO (data.py:110): Batch 0:
+[03/09/2023 03:10:28] INFO (data.py:111):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 03:10:28] INFO (data.py:112):   Targets shape: torch.Size([32])
+[03/09/2023 03:10:28] INFO (data.py:110): Batch 1:
+[03/09/2023 03:10:28] INFO (data.py:111):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 03:10:28] INFO (data.py:112):   Targets shape: torch.Size([32])
+[03/09/2023 03:13:01] DEBUG (train.py:19): Training partially
+[03/09/2023 03:13:01] INFO (data.py:37): Loading full training set
+[03/09/2023 03:13:02] INFO (data.py:42): Loading full testing set
+[03/09/2023 03:13:03] INFO (data.py:46): Loading full validation set
+[03/09/2023 03:13:03] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:13:03] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:13:07] INFO (model.py:41): Loaded model: MobileNetV2
+[03/09/2023 03:13:07] INFO (model.py:42): Device: cuda
+[03/09/2023 03:13:07] INFO (model.py:43): Loss: CrossEntropyLoss
+[03/09/2023 03:13:07] INFO (model.py:44): Optimizer: Adam
+[03/09/2023 03:13:07] INFO (model.py:45): Learning rate: 0.001
+[03/09/2023 03:13:07] INFO (model.py:55): Training the model...
+[03/09/2023 03:13:07] INFO (model.py:61): Epoch 1 of 10
+[03/09/2023 03:16:33] INFO (data.py:37): Loading full training set
+[03/09/2023 03:17:47] INFO (data.py:37): Loading full training set
+[03/09/2023 03:18:47] INFO (data.py:37): Loading full training set
+[03/09/2023 03:19:18] INFO (data.py:37): Loading full training set
+[03/09/2023 03:19:53] INFO (data.py:42): Loading full testing set
+[03/09/2023 03:20:01] INFO (data.py:46): Loading full validation set
+[03/09/2023 03:20:06] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:20:06] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:20:06] INFO (data.py:102): Number of classes: 1081
+[03/09/2023 03:20:06] INFO (data.py:103): Number of training samples: 5000
+[03/09/2023 03:20:06] INFO (data.py:104): Number of testing samples: 31112
+[03/09/2023 03:20:06] INFO (data.py:105): Number of validation samples: 5000
+[03/09/2023 03:20:37] INFO (data.py:37): Loading full training set
+[03/09/2023 03:20:39] INFO (data.py:42): Loading full testing set
+[03/09/2023 03:20:39] INFO (data.py:46): Loading full validation set
+[03/09/2023 03:20:39] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:20:39] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:20:39] INFO (data.py:102): Number of classes: 1081
+[03/09/2023 03:20:39] INFO (data.py:103): Number of training samples: 5000
+[03/09/2023 03:20:39] INFO (data.py:104): Number of testing samples: 31112
+[03/09/2023 03:20:39] INFO (data.py:105): Number of validation samples: 5000
+[03/09/2023 03:21:00] INFO (data.py:110): Batch 0:
+[03/09/2023 03:21:00] INFO (data.py:111):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 03:21:00] INFO (data.py:112):   Targets shape: torch.Size([32])
+[03/09/2023 03:21:00] INFO (data.py:110): Batch 1:
+[03/09/2023 03:21:00] INFO (data.py:111):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 03:21:00] INFO (data.py:112):   Targets shape: torch.Size([32])
+[03/09/2023 03:23:30] ERROR (data.py:126): 'Subset' object has no attribute 'classes'

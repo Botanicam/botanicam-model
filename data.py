@@ -7,13 +7,12 @@ from torchvision.datasets import ImageFolder
 from torchvision import transforms
 from torchvision.transforms import Resize, ToTensor
 from torch.utils.data import Subset, DataLoader
-from sklearn.model_selection import train_test_split
 from torchvision.transforms import Resize
 
 from const import *
 from log_cfg import logger
 
-def load_dataset(partial=True) -> Tuple[DataLoader, DataLoader, DataLoader]:
+def load_dataset(partial : bool = True) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
     Loads the dataset partially
 
@@ -28,26 +27,36 @@ def load_dataset(partial=True) -> Tuple[DataLoader, DataLoader, DataLoader]:
         ToTensor()
     ])
 
-    # Load the full training set & reduce it
+    # Define the root directory of the dataset
+    # DATASET CONST
+    dataset_root = DATASET_PATH
+
+    
+    # Load the full training set
     logger.info(f"Loading full training set")
-    full_train_dataset = ImageFolder(os.path.join(DATASET_PATH, 'images/train'), transform=transform)
+    full_train_dataset = ImageFolder(os.path.join(dataset_root, 'images/train'), transform=transform)
+
+    
+    # Load the full testing set
+    logger.info(f"Loading full testing set")
+    full_test_dataset = ImageFolder(os.path.join(dataset_root, 'images/test'), transform=transform)
+
+    # Load the full validation set
+    logger.info(f"Loading full validation set")
+    full_val_dataset = ImageFolder(os.path.join(dataset_root, 'images/val'), transform=transform)
+
+    # Reduce the datasets if partial is True
     if partial:
         reduced_train_dataset = reduce_dataset(full_train_dataset, SAMPLES)
+        reduced_val_dataset = reduce_dataset(full_val_dataset, SAMPLES)
     else:
         reduced_train_dataset = full_train_dataset
+        reduced_val_dataset = full_val_dataset
 
-    # Load the testing set
-    logger.info(f"Loading testing set")
-    test_dataset = ImageFolder(os.path.join(DATASET_PATH, 'images/test'), transform=transform)
-
-    # Load the validation set
-    logger.info(f"Loading validation set")
-    val_dataset = ImageFolder(os.path.join(DATASET_PATH, 'images/val'), transform=transform)
-
-    # Create a data loaders
+    # Create data loaders
     train_loader = DataLoader(reduced_train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
-    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
-    val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
+    test_loader = DataLoader(full_test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
+    val_loader = DataLoader(reduced_val_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
 
     return train_loader, test_loader, val_loader
 
@@ -67,7 +76,7 @@ def reduce_dataset(dataset: torch.utils.data.Dataset, samples_per_class: int) ->
     logger.info(f"Reducing dataset to {samples_per_class} samples per class")
     
     # stratified sampling
-    train_indices, _ = train_test_split(range(len(dataset)), train_size=samples_per_class, stratify=dataset.targets)
+    train_indices, _ = torch.utils.data.random_split(range(len(dataset)), [samples_per_class, len(dataset) - samples_per_class])
 
     # create a subset of the dataset
     reduced_dataset = Subset(dataset, train_indices)
@@ -78,7 +87,6 @@ def reduce_dataset(dataset: torch.utils.data.Dataset, samples_per_class: int) ->
 The images are at `DATASET_PATH/images` containing a 1081 classes (directories) with images contained.
 `DATASET_PATH/plantnet300K_metadata.json` contains the metadata of the images.
 """
-
 # Test
 if __name__ == '__main__':
     train_loader, test_loader, val_loader = load_dataset(partial=True)

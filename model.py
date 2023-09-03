@@ -43,7 +43,6 @@ class BotanicamModel:
         logger.info(f"Loaded model: {self.model.__class__.__name__}")
         logger.info(f"Device: {self.device}")
         logger.info(f"Loss: {self.loss.__class__.__name__}")
-        logger.info(f"Optimizer: {self.optimizer.__class__.__name__}")
         logger.info(f"Learning rate: {LR}")
 
     def train(

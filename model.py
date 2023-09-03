@@ -72,8 +72,9 @@ class BotanicamModel:
                 logger.info("End flag is set. Stopping training...")
                 break
 
-            # train
+            # train without accumulating gradients
             self.model.train()
+            self.optimizer.zero_grad()
 
             loop = tqdm(train_loader)
             for batch, (data, targets) in enumerate(loop):
@@ -95,6 +96,10 @@ class BotanicamModel:
                 # update tqdm loop
                 loop.set_description(f"Epoch [{epoch + 1}/{epochs}]")
                 loop.set_postfix(loss=loss.item())
+
+                # memory cleanup
+                del data, targets, scores, loss
+                torch.cuda.empty_cache()
 
             # then we validate so we can track improvements
             if not skip_validation:

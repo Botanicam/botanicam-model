@@ -50,7 +50,8 @@ class BotanicamModel:
             self, train_loader: torch.utils.data.DataLoader,
             val_loader: torch.utils.data.DataLoader,
             epochs: int = EPOCHS,
-            lr: float = LR
+            lr: float = LR,
+            skip_validation: bool = False
         ) -> None:
         """
         Trains the model
@@ -97,8 +98,12 @@ class BotanicamModel:
                 loop.set_postfix(loss=loss.item())
 
             # then we validate so we can track improvements
-            endFlag, val = self.__validate(val_loader)
-            self.history.append(val)
+            if not skip_validation:
+                endFlag, val = self.__validate(val_loader)
+                self.history.append(val)
+            else:
+                # append loss instead
+                self.history.append(loss.item())
         
         end_time = time.time()
         elapsed = end_time - start_time

@@ -35,9 +35,9 @@ def load_dataset(partial=True) -> Tuple[DataLoader, DataLoader, DataLoader]:
     # Load the full training set & reduce it
     logger.info(f"Loading full training set")
     # CHANGE ADDRESS
-    full_train_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/train'), transform=transform)
-    full_test_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/test'), transform=transform)
-    full_val_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/val'), transform=transform)
+    full_train_dataset = ImageFolder(os.path.join(DATASET_PATH, 'images/train'), transform=transform)
+    full_test_dataset = ImageFolder(os.path.join(DATASET_PATH, 'images/test'), transform=transform)
+    full_val_dataset = ImageFolder(os.path.join(DATASET_PATH, 'images/val'), transform=transform)
 
     if partial:
         reduced_train_dataset = reduce_dataset(full_train_dataset, SAMPLES)

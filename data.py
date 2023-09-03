@@ -3,6 +3,7 @@ from typing import *
 import torch
 import os
 
+from sklearn.utils import check_random_state
 from torchvision.datasets import ImageFolder
 from torchvision import transforms
 from torchvision.transforms import Resize, ToTensor
@@ -16,6 +17,9 @@ from log_cfg import logger
 def load_dataset(partial=True) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
     Loads the dataset partially
+    
+    Args:
+        partial (Bool): whether or not the dataset should be loaded fully or reduced
 
     Returns:
         train_loader (DataLoader): The training data loader
@@ -30,11 +34,20 @@ def load_dataset(partial=True) -> Tuple[DataLoader, DataLoader, DataLoader]:
 
     # Load the full training set & reduce it
     logger.info(f"Loading full training set")
-    full_train_dataset = ImageFolder(os.path.join(DATASET_PATH, 'images/train'), transform=transform)
+    # CHANGE ADDRESS
+    full_train_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/train'), transform=transform)
+    full_test_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/test'), transform=transform)
+    full_val_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/val'), transform=transform)
+
     if partial:
         reduced_train_dataset = reduce_dataset(full_train_dataset, SAMPLES)
+        reduced_test_dataset = reduce_dataset(full_test_dataset, SAMPLES)
+        reduced_val_dataset = reduce_dataset(full_val_dataset, SAMPLES)
+
     else:
         reduced_train_dataset = full_train_dataset
+        reduced_test_dataset = full_test_dataset
+        reduced_val_dataset = full_val_dataset
 
     # Load the testing set
     logger.info(f"Loading testing set")
@@ -46,31 +59,56 @@ def load_dataset(partial=True) -> Tuple[DataLoader, DataLoader, DataLoader]:
 
     # Create a data loaders
     train_loader = DataLoader(reduced_train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
-    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
-    val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
+    test_loader = DataLoader(reduced_test_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
+    val_loader = DataLoader(reduced_val_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=NUM_WORKERS)
 
     return train_loader, test_loader, val_loader
 
 
-# function to reduce the dataset size
-def reduce_dataset(dataset: torch.utils.data.Dataset, samples_per_class: int) -> torch.utils.data.Subset:
+def reduce_dataset(dataset: torch.utils.data.Dataset, samples_per_class: int, random_state=None) -> torch.utils.data.Subset:
     """
     Reduces the dataset size to `samples_per_class` samples per class
 
     Args:
         dataset (torch.utils.data.Dataset): The dataset to reduce
         samples_per_class (int): The number of samples per class
+        random_state: Optional random state for reproducible results
 
     Returns:
         reduced_dataset (torch.utils.data.Subset): The reduced dataset
     """
     logger.info(f"Reducing dataset to {samples_per_class} samples per class")
     
-    # stratified sampling
-    train_indices, _ = train_test_split(range(len(dataset)), train_size=samples_per_class, stratify=dataset.targets)
+    # Initialize a random state for shuffling
+    rng = check_random_state(random_state)
 
-    # create a subset of the dataset
-    reduced_dataset = Subset(dataset, train_indices)
+    # Convert the list of targets to a PyTorch tensor
+    targets_tensor = torch.tensor(dataset.targets)
+
+    # Calculate the number of classes and samples per class
+    num_classes = len(torch.unique(targets_tensor))
+    samples_per_class = min(samples_per_class, len(dataset) // num_classes)
+
+    # Initialize lists to store selected indices
+    selected_indices = []
+
+    # Iterate through each class
+    for class_label in range(num_classes):
+        # Find indices of samples belonging to the current class
+        class_indices = [idx for idx, label in enumerate(targets_tensor) if label == class_label]
+
+        # If the class has fewer samples than samples_per_class, include all samples
+        if len(class_indices) <= samples_per_class:
+            selected_indices.extend(class_indices)
+        else:
+            # Randomly select samples_per_class indices from the class
+            selected_indices.extend(rng.choice(class_indices, samples_per_class, replace=False))
+
+    # Shuffle the selected indices
+    rng.shuffle(selected_indices)
+
+    # Create a subset of the dataset using the selected indices
+    reduced_dataset = Subset(dataset, selected_indices)
 
     return reduced_dataset
 

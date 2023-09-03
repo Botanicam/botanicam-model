@@ -7,13 +7,12 @@ from torchvision.datasets import ImageFolder
 from torchvision import transforms
 from torchvision.transforms import Resize, ToTensor
 from torch.utils.data import Subset, DataLoader
-from sklearn.model_selection import train_test_split
 from torchvision.transforms import Resize
 
 from const import *
 from log_cfg import logger
 
-def load_dataset(partial : bool = True ) -> Tuple[DataLoader, DataLoader, DataLoader]:
+def load_dataset(partial : bool = True) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
     Loads the dataset partially
 
@@ -32,12 +31,19 @@ def load_dataset(partial : bool = True ) -> Tuple[DataLoader, DataLoader, DataLo
     # DATASET CONST
     dataset_root = DATASET_PATH
 
+    
     # Load the full training set
     logger.info(f"Loading full training set")
-    # CHANGE ADDRESS
-    full_train_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/train'), transform=transform)
-    full_test_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/test'), transform=transform)
-    full_val_dataset = ImageFolder(os.path.join('C:\\Users\\Ignatius David\\Desktop\\Datasets\\Plants\\plantnet_300K', 'images/val'), transform=transform)
+    full_train_dataset = ImageFolder(os.path.join(dataset_root, 'images/train'), transform=transform)
+
+    
+    # Load the full testing set
+    logger.info(f"Loading full testing set")
+    full_test_dataset = ImageFolder(os.path.join(dataset_root, 'images/test'), transform=transform)
+
+    # Load the full validation set
+    logger.info(f"Loading full validation set")
+    full_val_dataset = ImageFolder(os.path.join(dataset_root, 'images/val'), transform=transform)
 
     # Reduce the datasets if partial is True
     if partial:
@@ -81,7 +87,6 @@ def reduce_dataset(dataset: torch.utils.data.Dataset, samples_per_class: int) ->
 The images are at `DATASET_PATH/images` containing a 1081 classes (directories) with images contained.
 `DATASET_PATH/plantnet300K_metadata.json` contains the metadata of the images.
 """
-
 # Test
 if __name__ == '__main__':
     train_loader, test_loader, val_loader = load_dataset(partial=True)
@@ -101,8 +106,8 @@ if __name__ == '__main__':
     for batch_idx, (data, targets) in enumerate(train_loader):
         if batch_idx < 2:  # Print information for the first 2 batches
             logger.info(f"Batch {batch_idx}:")
-            logger.info(f"Data shape: {data.shape}")
-            logger.info(f"Targets shape: {targets.shape}")
+            logger.info(f"  Data shape: {data.shape}")
+            logger.info(f"  Targets shape: {targets.shape}")
         
     # Visualize a few samples (you can use matplotlib or another library for this)
     import matplotlib.pyplot as plt

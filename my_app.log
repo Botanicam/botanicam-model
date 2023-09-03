@@ -8994,3 +8994,30 @@
 [03/09/2023 03:21:00] INFO (data.py:111):   Data shape: torch.Size([32, 3, 224, 224])
 [03/09/2023 03:21:00] INFO (data.py:112):   Targets shape: torch.Size([32])
 [03/09/2023 03:23:30] ERROR (data.py:126): 'Subset' object has no attribute 'classes'
+[03/09/2023 03:38:42] INFO (data.py:37): Loading full training set
+[03/09/2023 03:39:27] INFO (data.py:37): Loading full training set
+[03/09/2023 03:39:33] INFO (data.py:42): Loading full testing set
+[03/09/2023 03:39:33] INFO (data.py:46): Loading full validation set
+[03/09/2023 03:39:34] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:39:34] INFO (data.py:77): Reducing dataset to 5000 samples per class
+[03/09/2023 03:39:34] INFO (data.py:101): Number of classes: 1081
+[03/09/2023 03:39:34] INFO (data.py:102): Number of training samples: 5000
+[03/09/2023 03:39:34] INFO (data.py:103): Number of testing samples: 31112
+[03/09/2023 03:39:34] INFO (data.py:104): Number of validation samples: 5000
+[03/09/2023 03:44:32] INFO (data.py:36): Loading full training set
+[03/09/2023 03:44:45] INFO (data.py:36): Loading full training set
+[03/09/2023 03:44:48] INFO (data.py:41): Loading full testing set
+[03/09/2023 03:44:49] INFO (data.py:45): Loading full validation set
+[03/09/2023 03:44:49] INFO (data.py:76): Reducing dataset to 5000 samples per class
+[03/09/2023 03:44:49] INFO (data.py:76): Reducing dataset to 5000 samples per class
+[03/09/2023 03:44:49] INFO (data.py:100): Number of classes: 1081
+[03/09/2023 03:44:49] INFO (data.py:101): Number of training samples: 5000
+[03/09/2023 03:44:49] INFO (data.py:102): Number of testing samples: 31112
+[03/09/2023 03:44:49] INFO (data.py:103): Number of validation samples: 5000
+[03/09/2023 03:45:25] INFO (data.py:108): Batch 0:
+[03/09/2023 03:45:25] INFO (data.py:109):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 03:45:25] INFO (data.py:110):   Targets shape: torch.Size([32])
+[03/09/2023 03:45:25] INFO (data.py:108): Batch 1:
+[03/09/2023 03:45:25] INFO (data.py:109):   Data shape: torch.Size([32, 3, 224, 224])
+[03/09/2023 03:45:25] INFO (data.py:110):   Targets shape: torch.Size([32])
+[03/09/2023 03:48:02] ERROR (data.py:124): 'Subset' object has no attribute 'classes'

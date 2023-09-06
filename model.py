@@ -1,7 +1,7 @@
 from typing import *
 import torch
 import torch.nn as nn
-from torchvision.models import mobilenet_v2, MobileNet_V2_Weights
+from torchvision.models import efficientnet_b3, EfficientNet_B3_Weights
 from torchvision import transforms
 from torchvision.transforms import Resize, ToTensor
 import torch.optim as optim
@@ -21,11 +21,9 @@ However, we will use the MobileNetV2 model since its less resource-intensive.
 
 class BotanicamModel:
     def __init__(self):
-        self.model = mobilenet_v2(progress=True, weights=MobileNet_V2_Weights.DEFAULT)
-        self.model.classifier = nn.Sequential(
-            nn.Dropout(0.2),
-            nn.Linear(self.model.last_channel, NUM_CLASSES)
-        )
+        self.model = efficientnet_b3(progress=True, weights=EfficientNet_B3_Weights.DEFAULT)
+        # replace the last layer with a new, untrained layer with 1081 classes
+        self.model.classifier[1] = nn.Linear(self.model.classifier[1].in_features, NUM_CLASSES)
 
         # loss & optimizer
         self.loss = nn.CrossEntropyLoss()

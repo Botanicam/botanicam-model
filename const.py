@@ -1,11 +1,11 @@
 # Number of epochs
-EPOCHS: int = 10
+EPOCHS: int = 30
 
 # Batch size
 BATCH_SIZE: int = 32
 
 # Learning rate
-LR: float = 0.001
+LR: float = 0.01
 
 # Number of classes
 NUM_CLASSES: int = 1081 # ref https://openreview.net/forum?id=eLYinD0TtIt
@@ -17,7 +17,7 @@ NUM_WORKERS: int = 2 # ref https://pytorch.org/docs/stable/data.html#torch.utils
 DATASET_PATH: str = 'plantnet_300K'
 
 # Samples for iterative training
-SAMPLES: int = 5000
+SAMPLES: int = 1000
 
 # Number of workers (i.e. threads)
 NUM_WORKERS: int = 2

@@ -17,7 +17,7 @@ NUM_WORKERS: int = 2 # ref https://pytorch.org/docs/stable/data.html#torch.utils
 DATASET_PATH: str = 'plantnet_300K'
 
 # Samples for iterative training
-SAMPLES: int = 1000
+SAMPLES: int = 5000
 
 # Number of workers (i.e. threads)
 NUM_WORKERS: int = 2

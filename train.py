@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
         if args.resume:
             # Train model or resume from a checkpoint
-            m.resume_training(
+            resume_training(
                 args.resume, 
                 train_loader, 
                 val_loader)

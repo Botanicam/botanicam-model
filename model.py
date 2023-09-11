@@ -8,6 +8,7 @@ import torch.optim as optim
 from tqdm import tqdm
 import time
 import matplotlib.pyplot as plt
+import os
 from PIL import Image
 
 from const import *
@@ -21,6 +22,7 @@ However, we will use the MobileNetV2 model since its less resource-intensive.
 
 class BotanicamModel:
     def __init__(self):
+
         self.model = efficientnet_b3(progress=True, weights=EfficientNet_B3_Weights.DEFAULT)
         # replace the last layer with a new, untrained layer with 1081 classes
         self.model.classifier[1] = nn.Linear(self.model.classifier[1].in_features, NUM_CLASSES)
@@ -43,12 +45,20 @@ class BotanicamModel:
         logger.info(f"Loss: {self.loss.__class__.__name__}")
         logger.info(f"Learning rate: {LR}")
 
+        # directory to save epoch checkpoints
+        self.checkpoints_dir = 'checkpoints'
+        # create dict if it doesnt exist
+        os.makedirs(self.checkpoints_dir, exists_ok=True)
+        self.checkpoint_frequency = SAVE_EVERY_N_EPOCHS
+
     def train(
-            self, train_loader: torch.utils.data.DataLoader,
+            self,
+            train_loader: torch.utils.data.DataLoader,
             val_loader: torch.utils.data.DataLoader,
             epochs: int = EPOCHS,
             lr: float = LR,
-            skip_validation: bool = False
+            skip_validation: bool = False,
+            checkpoint_number: int = 0
         ) -> None:
         """
         Trains the model
@@ -63,7 +73,7 @@ class BotanicamModel:
 
         # train the model
         endFlag = False
-        for epoch in range(epochs):
+        for epoch in range(checkpoint_number, epochs):
             logger.info(f"Epoch {epoch + 1} of {epochs}")
 
             if endFlag:
@@ -98,6 +108,12 @@ class BotanicamModel:
                 # memory cleanup
                 del data, targets, scores, loss
                 torch.cuda.empty_cache()
+                
+            # Checkpointing: Save the model after every N epochs
+            if (epoch + 1) % SAVE_EVERY_N_EPOCHS == 0:
+                checkpoint_filename = os.path.join(self.checkpoints_dir, f"checkpoint_epoch_{epoch + 1}.pth")
+                self.save(checkpoint_filename)
+
 
             # then we validate so we can track improvements
             if not skip_validation:

@@ -1,4 +1,4 @@
-from typing import *
+from typing import Tuple
 import argparse
 
 from torch.utils.data import DataLoader
@@ -9,7 +9,7 @@ import data
 import model
 
 
-def load_dataset(partial: bool = True) -> Tuple[DataLoader, DataLoader, DataLoader]:
+def load_dataset(partial: bool = PARTIAL_LOAD) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
     Loads the dataset
 
@@ -28,7 +28,7 @@ def load_dataset(partial: bool = True) -> Tuple[DataLoader, DataLoader, DataLoad
     return train_loader, test_loader, val_loader
 
 
-def train(train_loader: DataLoader, val_loader: DataLoader, partial: bool = True) -> model.BotanicamModel:
+def train(train_loader: DataLoader, val_loader: DataLoader, partial: bool = PARTIAL_LOAD) -> model.BotanicamModel:
     """
     Trains the model
 
@@ -65,6 +65,30 @@ def load_model(path="model_save.pth"):
 
     return m
 
+def resume_training(self, checkpoint_path: str, train_loader: DataLoader, val_loader: DataLoader):
+    """
+    Resume training from a checkpoint.
+
+    Args:
+        checkpoint_path (str): Path to the checkpoint file to resume from.
+        train_loader (torch.utils.data.DataLoader): Training data loader.
+        val_loader (torch.utils.data.DataLoader): Validation data loader.
+    """
+    logger.info(f"Resuming training from checkpoint: {checkpoint_path}")
+
+    # Load the checkpoint epoch data
+    checkpoint = load_model(checkpoint_path)
+    self.model.load_state_dict(checkpoint['model_state_dict'])
+    self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+    self.epoch = checkpoint['epoch'] 
+    self.best_accuracy = checkpoint['best_accuracy']
+    self.history = checkpoint['history']
+    self.convergence = checkpoint['convergence']
+
+    # Continue training
+    self.train(train_loader, val_loader, lr=LR, checkpoint_number=self.epoch + 1)
+
+
 
 if __name__ == "__main__":
     # Parse arguments
@@ -75,6 +99,11 @@ if __name__ == "__main__":
     parser.add_argument("--load", action="store_true", help="Whether to load the model or not")
     parser.add_argument("--filename", type=str, help="Filename of the model to load")
 
+    # ENTER EPOCH TO RESUME LOADING BY python train.py --resume checkpoint/checkpoint_epoch_{HIGHEST CHECKPOINT NUMBER IN THE FOLDER}.pth in dir
+    parser.add_argument("--resume", type=str, help="Path to checkpoint file to resume training from") 
+    
+
+    # resume training from epoch checkpoint
     args = parser.parse_args()
 
     # Load the dataset
@@ -84,12 +113,22 @@ if __name__ == "__main__":
         # Load the model
         m = load_model(args.filename)
     else:
-        # Train the model
-        m = train(
-            train_loader=train_loader,
-            val_loader=val_loader,
-            partial=args.partial
-        )
+        m = model.BotanicamModel()
+
+        if args.resume:
+            # Train model or resume from a checkpoint
+            m.resume_training(
+                args.resume, 
+                train_loader, 
+                val_loader)
+        else:
+            # Train from scratch
+
+            m = train(
+                train_loader=train_loader,
+                val_loader=val_loader,
+                partial=args.partial
+            )
     
     # Test
     accuracy = m.test(test_loader=test_loader)

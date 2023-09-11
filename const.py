@@ -29,3 +29,9 @@ MODEL_PATH: str = 'model.pth'
 CONVERGENCE_THRESHOLD: int = 3
 
 MAX_NON_IMPROVEMENT_EPOCHS: int = 5
+
+# Whether or not to use full or partial dataset
+PARTIAL_LOAD: bool = False
+
+# Checkpoint interval
+SAVE_EVERY_N_EPOCHS: int == 1

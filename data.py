@@ -12,7 +12,7 @@ from torchvision.transforms import Resize
 from const import *
 from log_cfg import logger
 
-def load_dataset(partial : bool = True) -> Tuple[DataLoader, DataLoader, DataLoader]:
+def load_dataset(partial : bool = PARTIAL_LOAD) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
     Loads the dataset partially
 
@@ -92,7 +92,7 @@ if __name__ == '__main__':
     from tqdm import tqdm
     import shutil
 
-    train_loader, test_loader, val_loader = load_dataset(partial=True)
+    train_loader, test_loader, val_loader = load_dataset(partial=PARTIAL_LOAD)
 
     # serialize the data loaders
     torch.save(train_loader, 'train_loader.pth')
@@ -112,22 +112,22 @@ if __name__ == '__main__':
     
     # Iterate through a few batches to check data loader behavior
     for batch_idx, (data, targets) in enumerate(train_loader):
-        if batch_idx < 2:  # Print information for the first 2 batches
-            logger.info(f"Batch {batch_idx}:")
-            logger.info(f"  Data shape: {data.shape}")
-            logger.info(f"  Targets shape: {targets.shape}")
+       #  if batch_idx < 2:  # Print information for the first 2 batches
+        logger.info(f"Batch {batch_idx}:")
+        logger.info(f"  Data shape: {data.shape}")
+        logger.info(f"  Targets shape: {targets.shape}")
         
     # Visualize a few samples (you can use matplotlib or another library for this)
     import matplotlib.pyplot as plt
     
     for batch_idx, (data, targets) in enumerate(train_loader):
         try:
-            if batch_idx < 2:  # Visualize the first 2 batches
-                for i in range(data.size(0)):  # Visualize individual samples in the batch
-                    sample_image = data[i].permute(1, 2, 0)  # Rearrange channels for visualization
-                    plt.imshow(sample_image)
-                    plt.title(f"Class: {train_loader.dataset.classes[targets[i]]}")
-                    plt.show()
+            # if batch_idx < 2:  # Visualize the first 2 batches
+            for i in range(data.size(0)):  # Visualize individual samples in the batch
+                sample_image = data[i].permute(1, 2, 0)  # Rearrange channels for visualization
+                plt.imshow(sample_image)
+                plt.title(f"Class: {train_loader.dataset.classes[targets[i]]}")
+                plt.show()
         except Exception as e:
             logger.error(e)
             break

@@ -113,7 +113,7 @@ if __name__ == "__main__":
         # Load the model
         m = load_model(args.filename)
     else:
-        m = model.BotanicamModel()
+        
 
         if args.resume:
             # Train model or resume from a checkpoint
@@ -123,7 +123,7 @@ if __name__ == "__main__":
                 val_loader)
         else:
             # Train from scratch
-
+            m = model.BotanicamModel()
             m = train(
                 train_loader=train_loader,
                 val_loader=val_loader,

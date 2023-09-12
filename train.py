@@ -1,13 +1,12 @@
 from typing import Tuple
 import argparse
-
+from model import BotanicamModel
 from torch.utils.data import DataLoader
+
 
 from const import *
 from log_cfg import logger
 import data
-import model
-
 
 def load_dataset(partial: bool = PARTIAL_LOAD) -> Tuple[DataLoader, DataLoader, DataLoader]:
     """
@@ -26,67 +25,6 @@ def load_dataset(partial: bool = PARTIAL_LOAD) -> Tuple[DataLoader, DataLoader, 
     train_loader, test_loader, val_loader = data.load_dataset(partial)
 
     return train_loader, test_loader, val_loader
-
-
-def train(train_loader: DataLoader, val_loader: DataLoader, partial: bool = PARTIAL_LOAD) -> model.BotanicamModel:
-    """
-    Trains the model
-
-    Args:
-        partial (bool): Whether to train the model partially or not
-                        If True, only 1% of the dataset is used for training,
-                        else the whole dataset is used
-    """
-    logger.debug(f"Training {'partially' if partial else 'fully'}")
-
-    # Load the model
-    m = model.BotanicamModel()
-
-    # Train!
-    m.train(train_loader, val_loader)
-
-    # Save the model
-    m.save(path="model_save.pth")
-    
-    return m
-
-def load_model(path="model_save.pth"):
-    """
-    Loads the model
-
-    Returns:
-        BotanicamModel: Model
-    """
-    # Load the model
-    m = model.BotanicamModel()
-
-    # Load the saved model
-    m.load(path="model_save.pth")
-
-    return m
-
-def resume_training(self, checkpoint_path: str, train_loader: DataLoader, val_loader: DataLoader):
-    """
-    Resume training from a checkpoint.
-
-    Args:
-        checkpoint_path (str): Path to the checkpoint file to resume from.
-        train_loader (torch.utils.data.DataLoader): Training data loader.
-        val_loader (torch.utils.data.DataLoader): Validation data loader.
-    """
-    logger.info(f"Resuming training from checkpoint: {checkpoint_path}")
-
-    # Load the checkpoint epoch data
-    checkpoint = load_model(checkpoint_path)
-    self.model.load_state_dict(checkpoint['model_state_dict'])
-    self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-    self.epoch = checkpoint['epoch'] 
-    self.best_accuracy = checkpoint['best_accuracy']
-    self.history = checkpoint['history']
-    self.convergence = checkpoint['convergence']
-
-    # Continue training
-    self.train(train_loader, val_loader, lr=LR, checkpoint_number=self.epoch + 1)
 
 
 
@@ -109,25 +47,24 @@ if __name__ == "__main__":
     # Load the dataset
     train_loader, test_loader, val_loader = load_dataset(args.partial)
 
+    # Initialise model
+    m = BotanicamModel()
     if args.load:
         # Load the model
-        m = load_model(args.filename)
+        m.load(args.filename)
     else:
-        m = model.BotanicamModel()
 
         if args.resume:
             # Train model or resume from a checkpoint
             m.resume_training(
-                args.resume, 
-                train_loader, 
-                val_loader)
+                checkpoint_path=args.resume, 
+                train_loader=train_loader, 
+                val_loader=val_loader)
         else:
             # Train from scratch
-
-            m = train(
+            m.train(
                 train_loader=train_loader,
                 val_loader=val_loader,
-                partial=args.partial
             )
     
     # Test

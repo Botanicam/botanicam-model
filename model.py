@@ -10,9 +10,11 @@ import time
 import matplotlib.pyplot as plt
 import os
 from PIL import Image
-
+from torch.utils.data import DataLoader
 from const import *
 from log_cfg import logger
+
+
 
 """
 The best model to fine-tune for plant image classification is the ResNet-50 model.
@@ -48,7 +50,9 @@ class BotanicamModel:
         # directory to save epoch checkpoints
         self.checkpoints_dir = 'checkpoints'
         # create dict if it doesnt exist
-        os.makedirs(self.checkpoints_dir, exists_ok=True)
+        if not os.path.exists(self.checkpoints_dir):
+            os.makedirs(self.checkpoints_dir)
+
         self.checkpoint_frequency = SAVE_EVERY_N_EPOCHS
 
     def train(
@@ -126,6 +130,23 @@ class BotanicamModel:
         end_time = time.time()
         elapsed = end_time - start_time
         logger.info(f"Training time: {elapsed:.2f}s")
+
+
+    def resume_training(self, checkpoint_path: str, train_loader: DataLoader, val_loader: DataLoader):
+        """
+        Resume training from a checkpoint.
+
+        Args:
+            checkpoint_path (str): Path to the checkpoint file to resume from.
+            train_loader (torch.utils.data.DataLoader): Training data loader.
+            val_loader (torch.utils.data.DataLoader): Validation data loader.
+        """
+        logger.info(f"Resuming training from checkpoint: {checkpoint_path}")
+
+        # Load the checkpoint epoch data
+        self.load(checkpoint_path)
+        # Continue training
+        self.train(train_loader, val_loader, lr=LR, checkpoint_number=self.epoch + 1)
     
     def test(self, test_loader: torch.utils.data.DataLoader) -> float:
         """
@@ -167,6 +188,7 @@ class BotanicamModel:
         logger.info(f"Test accuracy: {accuracy:.2f}%")
 
         return accuracy
+    
     
     def predict(self, image: torch.Tensor) -> torch.Tensor:
         """
@@ -300,21 +322,40 @@ class BotanicamModel:
 
         return (self.convergence >= MAX_NON_IMPROVEMENT_EPOCHS), accuracy
     
-    def save(self, path=MODEL_PATH) -> None:
+    def save(self, path=MODEL_PATH, epoch=0) -> None:
         """
-        Saves the model
+        Saves the model checkpoint
+
+        Args:
+            path (str): Path to save the checkpoint
+            epoch (int): Current epoch
         """
-        logger.info("Saving the model...")
-        torch.save(self.model.state_dict(), path)
-        logger.info("Model saved")
+        logger.info("Saving the model checkpoint...")
+        checkpoint = {
+            'model_state_dict': self.model.state_dict(),
+            'optimizer_state_dict': self.optimizer.state_dict(),
+            'epoch': epoch,
+            'best_accuracy': self.best_accuracy,
+            'history': self.history,
+            'convergence': self.convergence
+        }
+        torch.save(checkpoint, path)
+        logger.info("Model checkpoint saved")
 
     def load(self, path=MODEL_PATH) -> None:
         """
         Loads the model
         """
         logger.info("Loading the model...")
-        self.model.load_state_dict(torch.load(path))
+        checkpoint = torch.load(path)
+        self.model.load_state_dict(checkpoint['model_state_dict'])
+        self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        self.epoch = checkpoint['epoch'] 
+        self.best_accuracy = checkpoint['best_accuracy']
+        self.history = checkpoint['history']
+        self.convergence = checkpoint['convergence']
         logger.info("Model loaded")
+        return checkpoint
     
     def plot_training(self) -> None:
         """
@@ -326,3 +367,4 @@ class BotanicamModel:
         plt.ylabel('Accuracy')
         plt.title('Training History')
         plt.show()
+

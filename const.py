@@ -23,7 +23,7 @@ SAMPLES: int = 5000
 NUM_WORKERS: int = 2
 
 # Save model path
-MODEL_PATH: str = 'model.pth'
+MODEL_PATH: str = 'checkpoints'
 
 # Convergence threshold for model training improvement
 CONVERGENCE_THRESHOLD: int = 3
@@ -34,4 +34,4 @@ MAX_NON_IMPROVEMENT_EPOCHS: int = 5
 PARTIAL_LOAD: bool = False
 
 # Checkpoint interval
-SAVE_EVERY_N_EPOCHS: int == 1
+SAVE_EVERY_N_EPOCHS: int = 1

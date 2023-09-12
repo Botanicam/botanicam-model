@@ -53,6 +53,7 @@ if __name__ == "__main__":
         # Load the model
         m.load(args.filename)
     else:
+<<<<<<< HEAD
 
         if args.resume:
             # Train model or resume from a checkpoint
@@ -63,6 +64,20 @@ if __name__ == "__main__":
         else:
             # Train from scratch
             m.train(
+=======
+        
+
+        if args.resume:
+            # Train model or resume from a checkpoint
+            resume_training(
+                args.resume, 
+                train_loader, 
+                val_loader)
+        else:
+            # Train from scratch
+            m = model.BotanicamModel()
+            m = train(
+>>>>>>> 229f3dcea0863db824846ac6b91c86f987d86b59
                 train_loader=train_loader,
                 val_loader=val_loader,
             )

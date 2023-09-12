@@ -31,6 +31,7 @@ class BotanicamModel:
 
         # loss & optimizer
         self.loss = nn.CrossEntropyLoss()
+        self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
 
         # device
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -73,7 +74,7 @@ class BotanicamModel:
         """
         logger.info("Training the model...")
         start_time = time.time()
-        self.optimizer = optim.Adam(self.model.parameters(), lr=lr)
+        
 
         # train the model
         endFlag = False

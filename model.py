@@ -117,7 +117,7 @@ class BotanicamModel:
             # Checkpointing: Save the model after every N epochs
             if (epoch + 1) % SAVE_EVERY_N_EPOCHS == 0:
                 checkpoint_filename = os.path.join(self.checkpoints_dir, f"checkpoint_epoch_{epoch + 1}.pth")
-                self.save(checkpoint_filename)
+                self.save(checkpoint_filename, epoch + 1)
 
 
             # then we validate so we can track improvements
@@ -312,8 +312,7 @@ class BotanicamModel:
         if accuracy > self.best_accuracy:
             logger.debug(f"Validation accuracy increased ({self.best_accuracy:.6f} --> {accuracy:.6f}). Saving model...")
             self.best_accuracy = accuracy
-            torch.save(self.model.state_dict(), MODEL_PATH)
-            logger.debug("Model saved")
+
         
         # check if model has converged
         if accuracy - self.best_accuracy < CONVERGENCE_THRESHOLD:

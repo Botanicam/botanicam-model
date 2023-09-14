@@ -79,6 +79,8 @@ class BotanicamModel:
         # train the model
         endFlag = False
         for epoch in range(checkpoint_number, epochs):
+            logger.info(f"Epoch Loaded : {checkpoint_number}")
+            logger.info(f"Current Epoch : {epoch}")
             logger.info(f"Epoch {epoch + 1} of {epochs}")
 
             if endFlag:

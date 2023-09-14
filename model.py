@@ -147,7 +147,7 @@ class BotanicamModel:
         # Load the checkpoint epoch data
         self.load(checkpoint_path)
         # Continue training
-        self.train(train_loader, val_loader, lr=LR, checkpoint_number=self.epoch + 1)
+        self.train(train_loader, val_loader, lr=LR, checkpoint_number=self.epoch)
     
     def test(self, test_loader: torch.utils.data.DataLoader) -> float:
         """
